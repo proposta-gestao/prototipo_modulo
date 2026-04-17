@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Módulo SEI - Gestão e Exclusão de Versões Antigas de Documentos" />
+  <title>SEI | Gestão de Versões de Documentos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <div>
+          <span class="brand-title">SEI</span>
+          <span class="brand-subtitle">Sistema Eletrônico de Informações</span>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <span class="nav-badge">Administração</span>
+        <span class="nav-module">Gestão de Versões</span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-container">
+
+    <!-- PAGE TITLE -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h1 class="page-title">Gestão de Versões de Documentos</h1>
+        <p class="page-subtitle">
+          Identifique e exclua versões antigas de documentos, liberando espaço de armazenamento.
+          As versões <strong>primeira</strong>, <strong>última</strong> e <strong>assinadas</strong> são sempre preservadas.
+        </p>
+      </div>
+      <div class="page-info-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Módulo Administrativo
+      </div>
+    </div>
+
+    <!-- ALERT BANNER -->
+    <div class="alert-banner alert-warning">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span><strong>Atenção:</strong> Esta operação é irreversível. As versões excluídas não poderão ser recuperadas. Certifique-se de que os filtros estão corretos antes de prosseguir.</span>
+    </div>
+
+    <!-- FILTER CARD -->
+    <section class="card" id="filter-section">
+      <div class="card-header">
+        <div class="card-header-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        </div>
+        <h2 class="card-title">Filtros de Pesquisa</h2>
+      </div>
+      <div class="card-body">
+        <form id="search-form" novalidate>
+          <div class="form-grid">
+
+            <!-- Tipo de Documento -->
+            <div class="form-group full-width">
+              <label class="form-label" for="tipo-documento">
+                Tipo de Documento
+                <span class="label-hint">Deixe em branco para pesquisar todos os tipos</span>
+              </label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <input
+                  type="text"
+                  id="tipo-documento"
+                  name="tipo_documento"
+                  class="form-input"
+                  placeholder="Ex: Ofício, Despacho, Memorando, Contrato..."
+                  autocomplete="off"
+                />
+              </div>
+              <div class="tag-suggestions">
+                <span class="tag-label">Sugestões:</span>
+                <button type="button" class="tag-chip" onclick="setTipoDoc('Ofício')">Ofício</button>
+                <button type="button" class="tag-chip" onclick="setTipoDoc('Despacho')">Despacho</button>
+                <button type="button" class="tag-chip" onclick="setTipoDoc('Memorando')">Memorando</button>
+                <button type="button" class="tag-chip" onclick="setTipoDoc('Contrato')">Contrato</button>
+                <button type="button" class="tag-chip" onclick="setTipoDoc('Relatório')">Relatório</button>
+              </div>
+            </div>
+
+            <!-- Último Acesso -->
+            <div class="form-group">
+              <label class="form-label" for="ultimo-acesso">
+                Prazo desde o Último Acesso
+                <span class="label-required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <select id="ultimo-acesso" name="ultimo_acesso" class="form-select" required>
+                  <option value="" disabled selected>Selecione o prazo...</option>
+                  <option value="15">15 dias</option>
+                  <option value="30">30 dias</option>
+                  <option value="45">45 dias</option>
+                  <option value="60">60 dias</option>
+                  <option value="180">180 dias (6 meses)</option>
+                  <option value="360">360 dias (1 ano)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Data Inicial -->
+            <div class="form-group">
+              <label class="form-label" for="data-inicial">
+                Data de Criação — Início
+                <span class="label-required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <input type="date" id="data-inicial" name="data_inicial" class="form-input" required />
+              </div>
+            </div>
+
+            <!-- Data Final -->
+            <div class="form-group">
+              <label class="form-label" for="data-final">
+                Data de Criação — Fim
+                <span class="label-required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <input type="date" id="data-final" name="data_final" class="form-input" required />
+              </div>
+              <div id="date-range-error" class="field-error hidden">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                O intervalo máximo permitido é de 6 meses.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Window Info -->
+          <div class="window-info hidden" id="window-info">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="window-info-text"></span>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" id="btn-clear" onclick="clearForm()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+              Limpar Filtros
+            </button>
+            <button type="submit" class="btn btn-primary" id="btn-search">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Pesquisar Documentos
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- LOADING STATE -->
+    <div class="loading-overlay hidden" id="loading-overlay">
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <p class="loading-title">Pesquisando documentos...</p>
+        <p class="loading-sub" id="loading-sub">Consultando base de dados do SEI</p>
+      </div>
+    </div>
+
+    <!-- RESULTS SECTION -->
+    <section class="card hidden" id="results-section">
+      <div class="card-header">
+        <div class="card-header-icon success">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 class="card-title">Resultado da Pesquisa</h2>
+      </div>
+      <div class="card-body">
+
+        <!-- Summary Stats -->
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon docs">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-docs">0</span>
+              <span class="stat-label">Documentos Encontrados</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon versions">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-versions">0</span>
+              <span class="stat-label">Versões para Excluir</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon preserved">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-preserved">0</span>
+              <span class="stat-label">Versões Preservadas</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon storage">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-storage">0 MB</span>
+              <span class="stat-label">Espaço a Liberar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination Info -->
+        <div class="table-toolbar">
+          <div class="table-info">
+            Exibindo <strong id="page-from">1</strong>–<strong id="page-to">10</strong> de <strong id="page-total">0</strong> documentos
+          </div>
+          <div class="table-controls">
+            <input type="text" id="table-search" class="table-search-input" placeholder="Filtrar resultados..." oninput="filterTable(this.value)" />
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-wrapper">
+          <table class="data-table" id="results-table">
+            <thead>
+              <tr>
+                <th class="col-check">
+                  <input type="checkbox" id="select-all" title="Selecionar todos" onchange="toggleSelectAll(this)" />
+                </th>
+                <th>Protocolo / ID</th>
+                <th>Tipo de Documento</th>
+                <th>Data de Criação</th>
+                <th>Último Acesso</th>
+                <th class="col-center">Total Versões</th>
+                <th class="col-center">A Excluir</th>
+                <th class="col-center">Preservadas</th>
+                <th class="col-center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="results-tbody">
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination" id="pagination-controls">
+          <button class="page-btn" id="btn-prev" onclick="changePage(-1)" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Anterior
+          </button>
+          <div class="page-numbers" id="page-numbers"></div>
+          <button class="page-btn" id="btn-next" onclick="changePage(1)">
+            Próximo
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+        <!-- Delete Actions -->
+        <div class="delete-actions">
+          <div class="delete-info">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="selected-info">Nenhum documento selecionado</span>
+          </div>
+          <button class="btn btn-danger" id="btn-delete" onclick="confirmDelete()" disabled>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            Excluir Versões Antigas
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CONFIRMATION MODAL -->
+  <div class="modal-backdrop hidden" id="modal-backdrop">
+    <div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-header danger">
+        <div class="modal-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3 class="modal-title" id="modal-title">Confirmar Exclusão</h3>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">Você está prestes a excluir versões antigas de documentos. Esta ação <strong>não pode ser desfeita</strong>.</p>
+        <div class="modal-summary" id="modal-summary"></div>
+        <div class="modal-confirm-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="confirm-checkbox" onchange="toggleConfirmBtn(this)" />
+            <span>Entendo que esta ação é irreversível e desejo prosseguir</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-danger" id="btn-confirm-delete" disabled onclick="executeDelete()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          Confirmar Exclusão
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="modal-backdrop hidden" id="success-backdrop">
+    <div class="modal" id="success-modal">
+      <div class="modal-header success">
+        <div class="modal-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 class="modal-title">Exclusão Concluída</h3>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">As versões antigas foram excluídas com sucesso.</p>
+        <div class="modal-summary" id="success-summary"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeSuccessModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <span>SEI — Sistema Eletrônico de Informações &nbsp;|&nbsp; Módulo: Gestão de Versões v1.0</span>
+      <span class="footer-divider">|</span>
+      <span>Protótipo Funcional &nbsp;|&nbsp; 2026</span>
+    </div>
+    <div class="footer-right">
+      <button class="btn-reset-demo" onclick="if(confirm('Deseja restaurar todos os dados originais da demonstração?')) MockDB.reset()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Reiniciar Dados
+      </button>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
